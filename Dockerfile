@@ -16,18 +16,6 @@ RUN wget http://optimathsat.disi.unitn.it/releases/optimathsat-1.7.2/optimathsat
 
 ENV PATH=$PATH:/tools/fzn2omt/bin:/tools/optimathsat-1.7.2-linux-64-bit/bin
 
-# PySDD
-# TODO: test
-# https://github.com/wannesm/PySDD/pull/20/files
-WORKDIR /tools
-
-RUN git clone https://github.com/wannesm/PySDD.git
-RUN pip3 install cysignals numpy cython
-
-RUN cd PySDD && \
-    make build && \
-    python3 setup.py install
-
 # D4 CNF to decision-DNNF
 # usage: ./d4 -dDNNF benchTest/littleTest.cnf -out=/tmp/test.nnf -drat=/tmp/test.drat
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
@@ -63,6 +51,43 @@ RUN Z3_DIR="$(mktemp -d)" && \
     make install && \
     cd .. && \
     rm -rf "$Z3_DIR"
+
+# PySDD
+# https://github.com/wannesm/PySDD/pull/20/files
+WORKDIR /tools
+RUN pip3 install cysignals numpy cython
+RUN pip3 install PySDD
+
+# OR tools
+# https://github.com/juanmarcosdev/docker-minizinc-google-or-tools/blob/master/Dockerfile
+WORKDIR /tools
+RUN wget https://github.com/google/or-tools/releases/download/v9.2/or-tools_amd64_flatzinc_ubuntu-20.04_v9.2.9972.tar.gz && \
+    tar -xzvf or-tools_amd64_flatzinc_ubuntu-20.04_v9.2.9972.tar.gz
+
+RUN cp -r or-tools_flatzinc_Ubuntu-20.04-64bit_v9.2.9972/bin /usr && \
+    cp -r or-tools_flatzinc_Ubuntu-20.04-64bit_v9.2.9972/lib /usr && \
+    mkdir -p /usr/local/share/minizinc/ortools && \
+    mv or-tools_flatzinc_Ubuntu-20.04-64bit_v9.2.9972/share/minizinc/* /usr/local/share/minizinc/ortools/
+
+RUN echo "{ \n\
+  \"id\": \"com.google.or-tools\",\n\
+  \"name\": \"OR-Tools\",\n\
+  \"description\": \"OR Tools Constraint Programming Solver (from Google)\",\n\
+  \"version\": \"9.2.9972\",\n\
+  \"mznlib\": \"-Gortools\",\n\
+  \"executable\": \"../../../bin/fzn-or-tools\",\n\
+  \"tags\": [\"cp\",\"int\", ],\n\
+  \"stdFlags\": [\"-a\",\"-n\",\"-s\",\"-v\",\"-p\",\"-f\",\"-t\"],\n\
+  \"supportsMzn\": false,\n\
+  \"supportsFzn\": true,\n\
+  \"needsSolns2Out\": true,\n\
+  \"needsMznExecutable\": false,\n\
+  \"needsStdlibDir\": false,\n\
+  \"isGUIApplication\": false \n\
+}" >> /usr/local/share/minizinc/solvers/or-tools.msc
+
+RUN rm or-tools_amd64_flatzinc_ubuntu-20.04_v9.2.9972.tar.gz && \
+    rm -r or-tools_flatzinc_Ubuntu-20.04-64bit_v9.2.9972/
 
 # MAKE FOLDERS
 WORKDIR /
