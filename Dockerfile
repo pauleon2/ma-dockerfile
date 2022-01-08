@@ -39,7 +39,7 @@ ENV PATH=$PATH:/tools/MARCO
 
 # INSTALL Z3
 WORKDIR /tools/z3
-ENV Z3_VERSION "4.8.13"
+ENV Z3_VERSION "4.8.14"
 
 RUN Z3_DIR="$(mktemp -d)" && \
     cd "$Z3_DIR" && \
