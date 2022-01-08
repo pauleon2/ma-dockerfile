@@ -51,6 +51,8 @@ RUN Z3_DIR="$(mktemp -d)" && \
     make install && \
     cd .. && \
     rm -rf "$Z3_DIR"
+    
+RUN pip3 install z3-solver
 
 # PySDD
 # https://github.com/wannesm/PySDD/pull/20/files
