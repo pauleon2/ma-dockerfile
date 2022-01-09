@@ -58,7 +58,11 @@ RUN pip3 install z3-solver
 # https://github.com/wannesm/PySDD/pull/20/files
 WORKDIR /tools
 RUN pip3 install cysignals numpy cython
-RUN pip3 install PySDD
+
+RUN git clone https://github.com/wannesm/PySDD.git && \
+    cd PySDD && \
+    make build && \
+    python3 setup.py install
 
 # OR tools
 # https://github.com/juanmarcosdev/docker-minizinc-google-or-tools/blob/master/Dockerfile
