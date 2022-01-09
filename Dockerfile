@@ -74,6 +74,9 @@ RUN git clone https://github.com/wannesm/PySDD.git && \
     cd PySDD && \
     make build && \
     python3 setup.py install
+    
+# pySAT
+RUN pip3 install python-sat[pblib,aiger]
 
 # OR tools
 # https://github.com/juanmarcosdev/docker-minizinc-google-or-tools/blob/master/Dockerfile
