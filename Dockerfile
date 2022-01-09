@@ -27,6 +27,17 @@ RUN git clone https://github.com/pauleon2/d4.git && \
 
 ENV PATH=$PATH:/tools/d4
 
+RUN apt install unzip
+
+RUN wget http://www.cril.univ-artois.fr/kc/ressources/query-dnnf-0.4.180625.zip && \
+    unzip query-dnnf-0.4.180625.zip && \
+    mv query-dnnf-0.4.180625 query-dnnf && \
+    cd query-dnnf && \
+    ./configure && \
+    make
+
+ENV PATH=$PATH:/tools/query-dnnf
+
 # Install the minisat solver
 RUN apt-get install minisat
 
