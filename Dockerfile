@@ -71,7 +71,7 @@ WORKDIR /tools
 RUN pip3 install cysignals numpy cython
 
 # Install pysdd, the easy way
-RUN pip3 insall pysdd
+RUN pip3 install pysdd
     
 # pySAT
 RUN pip3 install python-sat[pblib,aiger]
