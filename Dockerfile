@@ -70,10 +70,8 @@ RUN pip3 install z3-solver
 WORKDIR /tools
 RUN pip3 install cysignals numpy cython
 
-RUN git clone https://github.com/wannesm/PySDD.git && \
-    cd PySDD && \
-    make build && \
-    python3 setup.py install
+# Install pysdd, the easy way
+RUN pip3 insall pysdd
     
 # pySAT
 RUN pip3 install python-sat[pblib,aiger]
