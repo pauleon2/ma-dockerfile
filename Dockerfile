@@ -23,18 +23,10 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN wget https://www.cril.univ-artois.fr/KC/ressources/d4 && \
     chmod u+x d4
 
-ENV PATH=$PATH:/tools/d4
-
-RUN apt install unzip
-
+RUN apt-get install unzip
 RUN wget http://www.cril.univ-artois.fr/kc/ressources/query-dnnf-0.4.180625.zip && \
     unzip query-dnnf-0.4.180625.zip && \
-    mv query-dnnf-0.4.180625 query-dnnf && \
-    cd query-dnnf && \
-    ./configure && \
-    make
-
-ENV PATH=$PATH:/tools/query-dnnf
+    mv query-dnnf-0.4.180625 query-dnnf
 
 # Install the minisat solver
 RUN apt-get install minisat
