@@ -20,10 +20,8 @@ ENV PATH=$PATH:/tools/fzn2omt/bin:/tools/optimathsat-1.7.2-linux-64-bit/bin
 # usage: ./d4 -dDNNF benchTest/littleTest.cnf -out=/tmp/test.nnf -drat=/tmp/test.drat
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 
-RUN git clone https://github.com/pauleon2/d4.git && \
-    apt-get install -y libboost-all-dev libgmp-dev && \
-    cd d4 && \
-    make -j8
+RUN wget https://www.cril.univ-artois.fr/KC/ressources/d4 && \
+    chmod u+x d4
 
 ENV PATH=$PATH:/tools/d4
 
